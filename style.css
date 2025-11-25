@@ -1,68 +1,132 @@
+:root {
+  --bg-color: #050a05;
+  --glass-bg: rgba(10, 40, 15, 0.65);
+  --glass-border: rgba(50, 255, 100, 0.2);
+  --primary-green: #00ff6a;
+  --dark-green: #004d20;
+  --text-glow: 0 0 10px rgba(0, 255, 106, 0.5);
+  --box-glow: 0 0 20px rgba(0, 255, 106, 0.2);
+  --white: #e0e0e0;
+}
+
 * {
   box-sizing: border-box;
-}
-:root {
-  --neon-green: #00ff6a;
-  --glass-bg: rgba(255, 255, 255, 0.1);
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
+  background: radial-gradient(circle at center, #0f1f0f 0%, #000000 100%);
+  font-family: "Roboto", sans-serif;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-color: #000; /* Dark background foundation */
+  color: var(--white);
 }
 
-.calculator-grid {
-  display: grid;
-  justify-content: center;
-  align-content: center;
-  grid-template-columns: repeat(4, 80px); /* 4 columns */
-  grid-template-rows: minmax(100px, auto) repeat(5, 80px); /* Screen row + button rows */
-}
-
-.span-two {
-  grid-column: span 2; /* Make AC and = buttons wide */
-}
-
-/* Button Styling */
-button {
-  cursor: pointer;
-  font-size: 1.5rem;
-  border: 1px solid rgba(0, 255, 106, 0.3);
-  background-color: rgba(0, 0, 0, 0.5); /* Dark transparent */
-  color: white;
-  transition: 0.2s;
-}
-
-button:hover {
-  background-color: rgba(0, 255, 106, 0.2); /* Green hover glow */
-  border-color: var(--neon-green);
-  box-shadow: 0 0 10px var(--neon-green); /* Outer glow */
-}
-
-/* Screen Styling */
-.output {
-  grid-column: 1 / -1; /* Span full width */
-  background-color: rgba(0, 0, 0, 0.75);
+.container {
+  position: relative;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
+  gap: 20px;
+}
+
+/* Glassmorphism Calculator Body */
+.calculator {
+  background: var(--glass-bg);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: var(--box-glow);
+  width: 350px;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+/* Display Screen */
+.display-screen {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: right;
+  display: flex;
   flex-direction: column;
-  padding: 10px;
+  justify-content: space-around;
   word-wrap: break-word;
   word-break: break-all;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+  border: 1px solid #003311;
 }
 
 .previous-operand {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  min-height: 1.2rem;
+  font-family: "Orbitron", sans-serif;
 }
 
 .current-operand {
-  color: var(--neon-green);
+  color: var(--primary-green);
   font-size: 2.5rem;
-  text-shadow: 0 0 5px var(--neon-green); /* Text glow */
+  font-weight: 700;
+  text-shadow: var(--text-glow);
+  font-family: "Orbitron", sans-serif;
+}
+
+/* Button Grid */
+.buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+button {
+  height: 60px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--white);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+/* Hover & Active Effects */
+button:hover {
+  background: rgba(0, 255, 106, 0.15);
+  border-color: var(--primary-green);
+  box-shadow: 0 0 10px rgba(0, 255, 106, 0.4);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 5px rgba(0, 255, 106, 0.6);
+}
+.control-btn {
+  color: #ff4d4d; /* Red for delete/clear */
+}
+/* Specific Button Styles */
+.span-two {
+  grid-column: span 2;
+}
+
+.operator-btn {
+  color: var(--primary-green);
+  font-weight: bold;
+}
+
+.equals-btn {
+  background: linear-gradient(135deg, var(--dark-green), #008035);
+  border: 1px solid var(--primary-green);
+  font-weight: bold;
+}
+
+.equals-btn:hover {
+  background: linear-gradient(135deg, #00662b, #00b34a);
 }

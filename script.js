@@ -4,14 +4,29 @@ class Calculator {
     this.currentOperandTextElement = currentOperandTextElement;
     this.clear();
   }
-  // Add these methods inside the Class
+
+  clear() {
+    this.currentOperand = "";
+    this.previousOperand = "";
+    this.operation = undefined;
+  }
+
+  delete() {
+    this.currentOperand = this.currentOperand.toString().slice(0, -1);
+  }
+
+  appendNumber(number) {
+    if (number === "." && this.currentOperand.includes(".")) return;
+    this.currentOperand = this.currentOperand.toString() + number.toString();
+  }
 
   chooseOperation(operation) {
     if (this.currentOperand === "") return;
-    // If we already have a previous number, calculate it first
+
     if (this.previousOperand !== "") {
       this.compute();
     }
+
     this.operation = operation;
     this.previousOperand = this.currentOperand;
     this.currentOperand = "";
@@ -21,7 +36,6 @@ class Calculator {
     let computation;
     const prev = parseFloat(this.previousOperand);
     const current = parseFloat(this.currentOperand);
-
     if (isNaN(prev) || isNaN(current)) return;
 
     switch (this.operation) {
@@ -40,14 +54,12 @@ class Calculator {
       default:
         return;
     }
+
     this.currentOperand = computation;
     this.operation = undefined;
     this.previousOperand = "";
   }
-  delete() {
-    this.currentOperand = this.currentOperand.toString().slice(0, -1);
-  }
-  // Update display to show operation
+
   updateDisplay() {
     this.currentOperandTextElement.innerText = this.currentOperand;
     if (this.operation != null) {
@@ -56,25 +68,14 @@ class Calculator {
       this.previousOperandTextElement.innerText = "";
     }
   }
-  clear() {
-    this.currentOperand = "";
-    this.previousOperand = "";
-    this.operation = undefined;
-  }
-
-  appendNumber(number) {
-    // Prevent typing multiple decimals (e.g. 1.1.1)
-    if (number === "." && this.currentOperand.includes(".")) return;
-    this.currentOperand = this.currentOperand.toString() + number.toString();
-  }
-
-  updateDisplay() {
-    this.currentOperandTextElement.innerText = this.currentOperand;
-  }
 }
 
-// Select elements
+// ===== SELECT ELEMENTS =====
 const numberButtons = document.querySelectorAll("[data-number]");
+const operationButtons = document.querySelectorAll("[data-operation]");
+const equalsButton = document.querySelector("[data-equals]");
+const clearButton = document.querySelector("[data-clear]");
+const deleteButton = document.querySelector("[data-delete]");
 const currentOperandTextElement = document.querySelector(
   "[data-current-operand]"
 );
@@ -82,21 +83,19 @@ const previousOperandTextElement = document.querySelector(
   "[data-previous-operand]"
 );
 
-// Initialize
+// ===== INITIALIZE CALCULATOR =====
 const calculator = new Calculator(
   previousOperandTextElement,
   currentOperandTextElement
 );
 
-// Add Click Listeners
+// ===== BUTTON EVENT LISTENERS =====
 numberButtons.forEach((button) => {
   button.addEventListener("click", () => {
     calculator.appendNumber(button.innerText);
     calculator.updateDisplay();
   });
 });
-const operationButtons = document.querySelectorAll("[data-operation]");
-const equalsButton = document.querySelector("[data-equals]");
 
 operationButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -109,15 +108,25 @@ equalsButton.addEventListener("click", () => {
   calculator.compute();
   calculator.updateDisplay();
 });
-const allClearButton = document.querySelector("[data-all-clear]");
-const deleteButton = document.querySelector("[data-delete]");
 
-allClearButton.addEventListener("click", () => {
+clearButton.addEventListener("click", () => {
   calculator.clear();
   calculator.updateDisplay();
 });
 
 deleteButton.addEventListener("click", () => {
   calculator.delete();
+  calculator.updateDisplay();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key >= 0 && e.key <= 9) calculator.appendNumber(e.key);
+  if (e.key === ".") calculator.appendNumber(e.key);
+  if (e.key === "=" || e.key === "Enter") calculator.compute();
+  if (e.key === "Backspace") calculator.delete();
+  if (e.key === "Escape") calculator.clear();
+  if (e.key === "+" || e.key === "-") calculator.chooseOperation(e.key);
+  if (e.key === "*") calculator.chooseOperation("×");
+  if (e.key === "/") calculator.chooseOperation("÷");
+
   calculator.updateDisplay();
 });
