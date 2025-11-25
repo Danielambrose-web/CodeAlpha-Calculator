@@ -44,7 +44,9 @@ class Calculator {
     this.operation = undefined;
     this.previousOperand = "";
   }
-
+  delete() {
+    this.currentOperand = this.currentOperand.toString().slice(0, -1);
+  }
   // Update display to show operation
   updateDisplay() {
     this.currentOperandTextElement.innerText = this.currentOperand;
@@ -105,5 +107,17 @@ operationButtons.forEach((button) => {
 
 equalsButton.addEventListener("click", () => {
   calculator.compute();
+  calculator.updateDisplay();
+});
+const allClearButton = document.querySelector("[data-all-clear]");
+const deleteButton = document.querySelector("[data-delete]");
+
+allClearButton.addEventListener("click", () => {
+  calculator.clear();
+  calculator.updateDisplay();
+});
+
+deleteButton.addEventListener("click", () => {
+  calculator.delete();
   calculator.updateDisplay();
 });
