@@ -38,8 +38,8 @@ body {
 
 .container {
   width: 100%;
-  max-width: 400px; /* Keeps calculator centered and scalable */
-  padding: 0 10px;
+  max-width: 500px; /* allow bigger calculator on mobile */
+  padding: 0 15px;
 }
 
 /* Glassmorphism Calculator */
@@ -49,10 +49,13 @@ body {
   -webkit-backdrop-filter: blur(18px);
   border: 1px solid var(--glass-border);
   border-radius: 20px;
-  padding: 20px;
+
   box-shadow: var(--box-glow);
-  width: 100%;
   transition: transform 0.3s ease;
+
+  width: 100%;
+  min-width: 280px; /* 🔥 important fix */
+  padding: 20px;
 }
 
 /* Display Screen */
